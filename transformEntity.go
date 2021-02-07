@@ -38,7 +38,7 @@ type Entity struct {
 // AdditionalFields is a container for fields.
 type AdditionalFields struct {
 	XMLName xml.Name `xml:"AdditionalFields"`
-	Items   []*Field  `xml:"Field"`
+	Items   []*Field `xml:"Field"`
 }
 
 // Genealogy structure.

@@ -21,10 +21,6 @@ commands:
     description: run unit tests
     exec: go test ./...
 
-  install:
-    description: install commandline tool
-    exec: go install github.com/dreadl0ck/maltego/cmd/maltego-gen
-
   release:
     description: release a new version
     exec: echo "TODO add goreleaser"

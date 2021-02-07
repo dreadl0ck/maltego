@@ -28,9 +28,12 @@ import (
 	"time"
 )
 
-func NewMaltegoEntity(category, identArchive, ident, prefix, propsPrefix, entName, imgName, description, parent string, isArchive bool, r *RegexConversion, propertyFields ...PropertyField) MaltegoEntity {
-	if !strings.Contains(imgName, "/") {
-		imgName = ident + "/" + imgName
+func NewMaltegoEntity(category, ident, prefix, propsPrefix, entName, imgName, description, parent string, r *RegexConversion, propertyFields ...*PropertyField) MaltegoEntity {
+
+	if imgName != "" {
+		if !strings.Contains(imgName, "/") {
+			imgName = ident + "/" + imgName
+		}
 	}
 
 	var (
@@ -49,7 +52,7 @@ func NewMaltegoEntity(category, identArchive, ident, prefix, propsPrefix, entNam
 				Value:        propsPrefix + strings.ToLower(entName),
 				DisplayValue: propsPrefix + strings.ToLower(entName),
 				Fields: Fields{
-					Items: []PropertyField{
+					Items: []*PropertyField{
 						{
 							Name:        propsPrefix + strings.ToLower(entName),
 							Type:        "string",
@@ -83,11 +86,7 @@ func NewMaltegoEntity(category, identArchive, ident, prefix, propsPrefix, entNam
 		}
 	}
 
-	if isArchive {
-		ent.Category = identArchive
-	} else {
-		ent.Category = category
-	}
+	ent.Category = category
 
 	if len(propertyFields) > 0 {
 		ent.Properties.Fields.Items = append(ent.Properties.Fields.Items, propertyFields...)
@@ -106,8 +105,8 @@ func NewMaltegoEntity(category, identArchive, ident, prefix, propsPrefix, entNam
 	return ent
 }
 
-func NewStringField(name string, description string) PropertyField {
-	return PropertyField{
+func NewStringField(name string, description string) *PropertyField {
+	return &PropertyField{
 		Name:        strings.ToLower(name),
 		Type:        "string",
 		Nullable:    true,
@@ -119,8 +118,8 @@ func NewStringField(name string, description string) PropertyField {
 	}
 }
 
-func NewRequiredStringField(name string, description string) PropertyField {
-	return PropertyField{
+func NewRequiredStringField(name string, description string) *PropertyField {
+	return &PropertyField{
 		Name:        strings.ToLower(name),
 		Type:        "string",
 		Nullable:    false,
@@ -133,12 +132,15 @@ func NewRequiredStringField(name string, description string) PropertyField {
 }
 
 // TODO: add config struct with default
-func GenEntity(category, identArchive, ident, prefix, propsPrefix, outDir string, entName string, imgName string, description string, parent string, isArchive bool, color string, regex *RegexConversion, fields ...PropertyField) {
-	imgName = imgName + "_" + color
+func GenEntity(category, ident, prefix, propsPrefix, outDir string, entName string, imgName string, description string, parent string, color string, regex *RegexConversion, fields ...*PropertyField) {
+
+	if imgName != "" {
+		imgName = imgName + "_" + color
+	}
 
 	var (
 		name = prefix + entName
-		ent  = NewMaltegoEntity(category, identArchive, ident, prefix, propsPrefix, entName, imgName, description, parent, isArchive, regex, fields...)
+		ent  = NewMaltegoEntity(category, ident, prefix, propsPrefix, entName, imgName, description, parent, regex, fields...)
 	)
 
 	data, err := xml.MarshalIndent(ent, "", " ")
@@ -161,38 +163,41 @@ func GenEntity(category, identArchive, ident, prefix, propsPrefix, outDir string
 		log.Fatal(err)
 	}
 
-	// add icon files
-	_ = os.MkdirAll(filepath.Join(outDir, "Icons", ident), 0o700)
+	if imgName != "" {
 
-	var (
-		ext  = ".svg"
-		dir  = "material-icons"
-		base = filepath.Join("/tmp", "icons", dir, "renamed", imgName)
-	)
+		// add icon files
+		_ = os.MkdirAll(filepath.Join(outDir, "Icons", ident), 0o700)
 
-	if _, err = os.Stat(base + "16" + ext); err != nil {
-		ext = ".png"
-		dir = "material-icons-png"
-		base = filepath.Join("/tmp", "icons", dir, "renamed", imgName)
+		var (
+			ext  = ".svg"
+			dir  = "material-icons"
+			base = filepath.Join("/tmp", "icons", dir, "renamed", imgName)
+		)
+
+		if _, err = os.Stat(base + "16" + ext); err != nil {
+			ext = ".png"
+			dir = "material-icons-png"
+			base = filepath.Join("/tmp", "icons", dir, "renamed", imgName)
+		}
+
+		dstBase := filepath.Join(outDir, "Icons", ident, imgName)
+
+		CopyFile(
+			filepath.Join("/tmp", "icons", dir, "renamed", imgName+".xml"),
+			filepath.Join(outDir, "Icons", ident, imgName+".xml"),
+		)
+
+		CopyFile(base+"16"+ext, dstBase+ext)
+		CopyFile(base+"24"+ext, dstBase+"24"+ext)
+		CopyFile(base+"32"+ext, dstBase+"32"+ext)
+		CopyFile(base+"48"+ext, dstBase+"48"+ext)
+		CopyFile(base+"96"+ext, dstBase+"96"+ext)
 	}
-
-	dstBase := filepath.Join(outDir, "Icons", ident, imgName)
-
-	copyFile(
-		filepath.Join("/tmp", "icons", dir, "renamed", imgName+".xml"),
-		filepath.Join(outDir, "Icons", ident, imgName+".xml"),
-	)
-
-	copyFile(base+"16"+ext, dstBase+ext)
-	copyFile(base+"24"+ext, dstBase+"24"+ext)
-	copyFile(base+"32"+ext, dstBase+"32"+ext)
-	copyFile(base+"48"+ext, dstBase+"48"+ext)
-	copyFile(base+"96"+ext, dstBase+"96"+ext)
 }
 
-// copyFile the source file contents to destination
+// CopyFile the source file contents to destination
 // file attributes wont be copied and an existing file will be overwritten.
-func copyFile(src, dst string) {
+func CopyFile(src, dst string) {
 	in, err := os.Open(src)
 	if err != nil {
 		log.Fatal(err)

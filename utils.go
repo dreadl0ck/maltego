@@ -45,7 +45,6 @@ func dump(data []byte, typ messageType) {
 	}
 }
 
-
 // EscapeText ensures that the input text is safe to embed within XML.
 func EscapeText(text string) string {
 	var buf bytes.Buffer
@@ -172,7 +171,7 @@ func Pluralize(name string) string {
 	return name
 }
 
-func GenServerListing(prefix, outDir string, trs []TransformCoreInfo) {
+func GenServerListing(prefix, outDir string, trs []*TransformCoreInfo) {
 	srv := Server{
 		Name:        "Local",
 		Enabled:     true,
@@ -224,7 +223,7 @@ func GenServerListing(prefix, outDir string, trs []TransformCoreInfo) {
 	}
 }
 
-func GenTransformSet(name string, description string, prefix string, outDir string, trs []TransformCoreInfo) {
+func GenTransformSet(name string, description string, prefix string, outDir string, trs []*TransformCoreInfo) {
 	tSet := TransformSet{
 		Name:        name,
 		Description: description,
@@ -245,7 +244,7 @@ func GenTransformSet(name string, description string, prefix string, outDir stri
 	}
 
 	_ = os.MkdirAll(filepath.Join(outDir, "TransformSets"), 0o700)
-	f, err := os.Create(filepath.Join(outDir, "TransformSets", name + ".set"))
+	f, err := os.Create(filepath.Join(outDir, "TransformSets", name+".set"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -261,7 +260,7 @@ func GenTransformSet(name string, description string, prefix string, outDir stri
 	}
 }
 
-func GenFullConfigArchive(ident string) {
+func GenMaltegoArchive(ident, category string) {
 	// clean
 	_ = os.RemoveAll(ident)
 
@@ -285,7 +284,7 @@ func GenFullConfigArchive(ident string) {
 		}
 	}()
 
-	fCategory, err := os.Create(filepath.Join(ident, "EntityCategories", ident + ".category"))
+	fCategory, err := os.Create(filepath.Join(ident, "EntityCategories", ident+".category"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -306,7 +305,7 @@ maltego.client.name=Maltego Classic Eval
 maltego.mtz.version=1.0
 maltego.graph.version=1.2`)
 
-	_, _ = fCategory.WriteString("<EntityCategory name=\"" + strings.ToTitle(ident) + "\"/>")
+	_, _ = fCategory.WriteString("<EntityCategory name=\"" + category + "\"/>")
 
 	fmt.Println("bootstrapped configuration archive for Maltego")
 }
@@ -353,7 +352,7 @@ enabled=true`)
 
 		// Machine
 
-		copyFile(
+		CopyFile(
 			filepath.Join("machines", f.Name()),
 			filepath.Join(
 				path,

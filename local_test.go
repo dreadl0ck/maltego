@@ -18,7 +18,6 @@ import (
 	"testing"
 )
 
-
 func TestParseLocalArguments(t *testing.T) {
 	args := []string{"/var/folders/test", "pãypal.com\nxn--pypal-9qa.com\nregistered", "fqdn=pãypal.com\nxn--pypal-9qa.com\nregistered#unicode=pãypal.com#ascii=xn--pypal-9qa.com#status=registered#ips=34.102.136.180#names=180.136.102.34.bc.googleusercontent.com."}
 	lt := ParseLocalArguments(args[1:])

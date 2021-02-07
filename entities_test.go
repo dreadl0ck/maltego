@@ -22,8 +22,8 @@ import (
 var maltegoEntities = []EntityCoreInfo{
 	{"ContentType", "category", "A MIME type describes different multi-media formats", "", nil},
 	{"Email", "mail_outline", "An email message", "maltego.Email", nil},
-	{"Interface", "router", "A network interface", "", []PropertyField{NewRequiredStringField("properties.interface", "Name of the network interface"), NewStringField("snaplen", "snap length for ethernet frames in bytes, default: 1514"), NewStringField("bpf", "berkeley packet filter to apply")}},
-	{"PCAP", "sd_storage", "A packet capture dump file", "", []PropertyField{NewRequiredStringField("path", "Absolute path to the PCAP file")}},
+	{"Interface", "router", "A network interface", "", []*PropertyField{NewRequiredStringField("properties.interface", "Name of the network interface"), NewStringField("snaplen", "snap length for ethernet frames in bytes, default: 1514"), NewStringField("bpf", "berkeley packet filter to apply")}},
+	{"PCAP", "sd_storage", "A packet capture dump file", "", []*PropertyField{NewRequiredStringField("path", "Absolute path to the PCAP file")}},
 }
 
 func compareGeneratedXML(data []byte, expected string, t *testing.T) {
@@ -67,7 +67,7 @@ func TestGenerateTestEntityXMLEntity(t *testing.T) {
 			Value:        "properties.test",
 			DisplayValue: "properties.test",
 			Fields: Fields{
-				Items: []PropertyField{
+				Items: []*PropertyField{
 					{
 						Name:        "properties.test",
 						Type:        "string",
@@ -92,28 +92,28 @@ func TestGenerateTestEntityXMLEntity(t *testing.T) {
 }
 
 func TestToTransformDisplayName(t *testing.T) {
-	res := ToTransformDisplayName("ToTCPServices")
-	if res != "To TCP Services [NETCAP]" {
+	res := ToTransformDisplayName("ToTCPServices", "ORG")
+	if res != "To TCP Services [ORG]" {
 		t.Fatal("unexpected result", res)
 	}
 
-	res = ToTransformDisplayName("ToDHCP")
-	if res != "To DHCP [NETCAP]" {
+	res = ToTransformDisplayName("ToDHCP", "ORG")
+	if res != "To DHCP [ORG]" {
 		t.Fatal("unexpected result", res)
 	}
 
-	res = ToTransformDisplayName("ToServerNameIndicators")
-	if res != "To Server Name Indicators [NETCAP]" {
+	res = ToTransformDisplayName("ToServerNameIndicators", "ORG")
+	if res != "To Server Name Indicators [ORG]" {
 		t.Fatal("unexpected result", res)
 	}
 
-	res = ToTransformDisplayName("ToURLsForHost")
-	if res != "To URLs For Host [NETCAP]" {
+	res = ToTransformDisplayName("ToURLsForHost", "ORG")
+	if res != "To URLs For Host [ORG]" {
 		t.Fatal("unexpected result", res)
 	}
 
-	res = ToTransformDisplayName("ToSourceIPs")
-	if res != "To Source IPs [NETCAP]" {
+	res = ToTransformDisplayName("ToSourceIPs", "ORG")
+	if res != "To Source IPs [ORG]" {
 		t.Fatal("unexpected result", res)
 	}
 }

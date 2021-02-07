@@ -28,9 +28,6 @@ import (
 )
 
 const (
-	// can be used to set the debug mode for all generated maltego transforms.
-	transformDebug = false
-
 	configFileExtension = ".mtz"
 )
 
@@ -107,9 +104,18 @@ type InputConstraints struct {
 
 // TransformCoreInfo describes basic information needed to create a transform.
 type TransformCoreInfo struct {
-	ID          string // e.g ToAuditRecords
-	InputEntity string
-	Description string
+	ID          string `yaml:"id"` // e.g ToAuditRecords
+	InputEntity string `yaml:"input"`
+	Description string `yaml:"description"`
+}
+
+// TransformCoreInfo describes additional information needed to create a transform.
+type TransformCoreInfoExtended struct {
+	ID          string `yaml:"id"` // e.g ToAuditRecords
+	InputEntity string `yaml:"input"`
+	Description string `yaml:"description"`
+	Executable  string `yaml:"executable"`
+	Args        []string `yaml:"args"`
 }
 
 // Settings
@@ -178,8 +184,8 @@ type TransformSet struct {
 	} `xml:"Transforms"`
 }
 
-// e.g. "ToAuditRecords" -> "To Audit Records [NETCAP]".
-func ToTransformDisplayName(in string) string {
+// e.g. "ToAuditRecords" -> "To Audit Records [org]".
+func ToTransformDisplayName(in, org string) string {
 	var b strings.Builder
 
 	for i, c := range in {
@@ -209,10 +215,10 @@ func ToTransformDisplayName(in string) string {
 			b.WriteRune(c)
 		}
 	}
-	return strings.TrimSpace(b.String() + " [NETCAP]")
+	return strings.TrimSpace(b.String() + " [" + org + "]")
 }
 
-func NewTransformSettings(id string, debug bool, executable string) TransformSettings {
+func NewTransformSettings(args []string, debug bool, executable string) TransformSettings {
 	trs := TransformSettings{
 		Enabled:            true,
 		DisclaimerAccepted: false,
@@ -231,7 +237,7 @@ func NewTransformSettings(id string, debug bool, executable string) TransformSet
 					Name:  "transform.local.parameters",
 					Type:  "string",
 					Popup: false,
-					Text:  "transform " + id,
+					Text:  strings.Join(args, " "),
 				},
 				{
 					Name:  "transform.local.working-directory",
@@ -252,10 +258,10 @@ func NewTransformSettings(id string, debug bool, executable string) TransformSet
 	return trs
 }
 
-func NewTransform(author, prefix, id string, description string, input string) MaltegoTransform {
+func NewTransform(org, author, prefix, id string, description string, input string) MaltegoTransform {
 	tr := MaltegoTransform{
 		Name:               prefix + id,
-		DisplayName:        ToTransformDisplayName(id),
+		DisplayName:        ToTransformDisplayName(id, org),
 		Abstract:           false,
 		Template:           false,
 		Visibility:         "public",
@@ -374,10 +380,10 @@ func NewTransform(author, prefix, id string, description string, input string) M
 	return tr
 }
 
-func GenTransform(author, prefix string, outDir string, name string, description string, inputEntity string, executable string) {
+func GenTransform(org, author, prefix string, outDir string, name string, description string, inputEntity string, executable string, args []string, debug bool) {
 	var (
-		tr  = NewTransform(author, prefix, name, description, inputEntity)
-		trs = NewTransformSettings(strings.ToLower(string(name[0]))+name[1:], transformDebug, executable)
+		tr  = NewTransform(org, author, prefix, name, description, inputEntity)
+		trs = NewTransformSettings(args, debug, executable)
 	)
 
 	// write Transform

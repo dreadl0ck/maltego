@@ -118,7 +118,7 @@ type EntityProperties struct {
 
 // Fields hold property items.
 type Fields struct {
-	Items []PropertyField
+	Items []*PropertyField
 }
 
 // PropertyField are set on entities.
@@ -137,11 +137,11 @@ type PropertyField struct {
 
 // EntityCoreInfo describes an entity.
 type EntityCoreInfo struct {
-	Name        string
-	Icon        string
-	Description string
-	Parent      string
-	Fields      []PropertyField
+	Name        string           `yaml:"name"`
+	Icon        string           `yaml:"icon"`
+	Description string           `yaml:"description"`
+	Parent      string           `yaml:"parent"`
+	Fields      []*PropertyField `yaml:"fields"`
 }
 
 // RegexConversion contains conversion information.

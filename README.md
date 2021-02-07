@@ -8,13 +8,13 @@ This is a Go package that provides datastructures for interacting with the [Malt
 
 ## Key Features
 
-- **type safe datastructures for code components**: messages and configuration entities are both fully modeled.
-- **utility functions**: Escaping XML, Calculating line thickness etc.
-- **automatically escapes input**: user supplied values are guaranteed to be properly escaped so they don't break th XML.
-- **go modules support**: reproducible builds, semantic versioning
-- **unit tests**: functional correctness 
-- **usage examples**: well documented and containerized
-- **MIT licensed**: can be incorporated into proprietary products
+- ***type safe datastructures for code components***: messages and configuration entities are both fully modeled.
+- ***utility functions***: Escaping XML, Calculating line thickness etc.
+- ***automatically escapes input***: user supplied values are guaranteed to be properly escaped so they don't break the XML.
+- ***go modules support***: reproducible builds, semantic versioning
+- ***unit tests***: functional correctness 
+- ***usage examples***: well documented and containerized
+- ***MIT licensed***: can be incorporated into proprietary products
 
 ## Installation
 
