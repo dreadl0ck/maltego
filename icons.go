@@ -11,35 +11,33 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package main
+package maltego
 
 import (
-	"fmt"
-	"github.com/dreadl0ck/maltego"
-	"net"
-	"net/http"
+	"log"
+	"os"
 )
 
-var lookupTXT = maltego.MakeHandler(func(w http.ResponseWriter, r *http.Request, t *maltego.Transform) {
+var icon = `<Icon>
+<Aliases/>
+</Icon>`
 
-	// get host name
-	host := t.RequestMessage.Entities.Items[0].Value
-
-	fmt.Println("got request from", r.RemoteAddr, "to lookup TXT records for:", host)
-
-	// perform lookup
-	txts, err := net.LookupTXT(host)
+// CreateXMLIconFile will create the XML structure at the given path.
+func CreateXMLIconFile(path string) {
+	// create XML info file for maltego
+	fXML, err := os.Create(path + ".xml")
 	if err != nil {
-		fmt.Println("failed to lookup nameservers:", err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		log.Fatal(err)
 	}
 
-	fmt.Println("results for", host, "=", txts)
-
-	// process results
-	for _, txt := range txts {
-		e := t.AddEntity(maltego.DNSName, txt)
-		e.AddProperty("hostname", "Hostname", maltego.Strict, txt)
+	_, err = fXML.WriteString(icon)
+	if err != nil {
+		log.Fatal(err)
 	}
-})
+
+	err = fXML.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+

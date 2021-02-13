@@ -111,10 +111,10 @@ type TransformCoreInfo struct {
 
 // TransformCoreInfo describes additional information needed to create a transform.
 type TransformCoreInfoExtended struct {
-	ID          string `yaml:"id"` // e.g ToAuditRecords
-	InputEntity string `yaml:"input"`
-	Description string `yaml:"description"`
-	Executable  string `yaml:"executable"`
+	ID          string   `yaml:"id"` // e.g ToAuditRecords
+	InputEntity string   `yaml:"input"`
+	Description string   `yaml:"description"`
+	Executable  string   `yaml:"executable"`
 	Args        []string `yaml:"args"`
 }
 
