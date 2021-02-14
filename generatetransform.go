@@ -371,7 +371,7 @@ func NewTransform(org, author, prefix, id string, description string, input stri
 		OutputEntities: "",
 		DefaultSets: defaultSets{Items: []Set{
 			{
-				Name: "NETCAP",
+				Name: org,
 			},
 		}},
 		StealthLevel: "0",
