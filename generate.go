@@ -131,8 +131,8 @@ func NewRequiredStringField(name string, description string) *PropertyField {
 	}
 }
 
-// TODO: add config struct with default
-func GenEntity(category, ident, prefix, propsPrefix, outDir string, entName string, imgName string, description string, parent string, color string, regex *RegexConversion, fields ...*PropertyField) {
+// TODO: add config struct with defaults
+func GenEntity(path string, category, ident, prefix, propsPrefix, outDir string, entName string, imgName string, description string, parent string, color string, regex *RegexConversion, fields ...*PropertyField) {
 
 	if imgName != "" {
 		imgName = imgName + "_" + color
@@ -170,20 +170,20 @@ func GenEntity(category, ident, prefix, propsPrefix, outDir string, entName stri
 
 		var (
 			ext  = ".svg"
-			dir  = "material-icons"
-			base = filepath.Join("/tmp", "icons", dir, "renamed", imgName)
+			base = filepath.Join(path, "renamed", imgName)
 		)
 
+		// try to determine image type: first try svg, then if failed assume png
 		if _, err = os.Stat(base + "16" + ext); err != nil {
 			ext = ".png"
-			dir = "material-icons-png"
-			base = filepath.Join("/tmp", "icons", dir, "renamed", imgName)
+			base = filepath.Join(path, "renamed", imgName)
 		}
 
 		dstBase := filepath.Join(outDir, "Icons", ident, imgName)
 
+		// copy xml icon meta file
 		CopyFile(
-			filepath.Join("/tmp", "icons", dir, "renamed", imgName+".xml"),
+			filepath.Join(path, "renamed", imgName+".xml"),
 			filepath.Join(outDir, "Icons", ident, imgName+".xml"),
 		)
 
@@ -225,22 +225,24 @@ func CopyFile(src, dst string) {
 	}
 }
 
-// Directory structure:
-// .
-// ├── entities
-// │     ├── ...
-// │     └── example.entity
-// ├── EntityCategories
-// │     └── EntityCategory.category
-// ├── Icons
-// │     └── EntityCategory
-// │           ├── sim_card_alert.png
-// │           ├── sim_card_alert.xml
-// │           ├── sim_card_alert24.png
-// │           ├── sim_card_alert32.png
-// │           ├── sim_card_alert48.png
-// │           └── sim_card_alert96.png
-// └── version.properties.
+// GenEntityArchive will generate a configuration archive for maltego entities.
+//
+//     Directory structure:
+//     .
+//     ├── entities
+//     │     ├── ...
+//     │     └── example.entity
+//     ├── EntityCategories
+//     │     └── EntityCategory.category
+//     ├── Icons
+//     │     └── EntityCategory
+//     │           ├── sim_card_alert.png
+//     │           ├── sim_card_alert.xml
+//     │           ├── sim_card_alert24.png
+//     │           ├── sim_card_alert32.png
+//     │           ├── sim_card_alert48.png
+//     │           └── sim_card_alert96.png
+//     └── version.properties.
 func GenEntityArchive(entityCategory string) {
 	// clean
 	_ = os.RemoveAll("entities")
