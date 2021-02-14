@@ -40,4 +40,3 @@ func CreateXMLIconFile(path string) {
 		log.Fatal(err)
 	}
 }
-

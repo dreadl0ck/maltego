@@ -144,6 +144,21 @@ type EntityCoreInfo struct {
 	Fields      []*PropertyField `yaml:"fields"`
 }
 
+// EntityCoreInfo describes an entity.
+type EntityCoreInfoExtended struct {
+	Name        string           `yaml:"name"`
+	Icon        string           `yaml:"icon"`
+	Description string           `yaml:"description"`
+	Parent      string           `yaml:"parent"`
+	Fields      []*PropertyField `yaml:"fields"`
+	Image       *ImageInfos       `yaml:"image"`
+}
+
+type ImageInfos struct {
+	Name  string `yaml:"name"`
+	Color string `yaml:"color"`
+}
+
 // RegexConversion contains conversion information.
 type RegexConversion struct {
 	Regex      string
