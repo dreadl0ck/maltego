@@ -12,3 +12,7 @@
  */
 
 package main
+
+func main() {
+	// TODO: add simple server example
+}

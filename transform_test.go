@@ -16,7 +16,6 @@ package maltego
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
 	"strings"
 	"testing"
 )
@@ -155,7 +154,8 @@ func TestParseTDSToMaltego(t *testing.T) {
 
 func parseFailure(t *testing.T, reason, expected string, transform *Transform) {
 	fmt.Println("=========== OUTPUT ==========")
-	spew.Dump(transform)
+	//spew.Dump(transform)
+	fmt.Println(transform)
 	fmt.Println("=========== EXPECTED ==========")
 	fmt.Println(expected)
 	t.Fatal("unexpected output: " + reason)
