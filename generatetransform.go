@@ -218,7 +218,7 @@ func ToTransformDisplayName(in, org string) string {
 	return strings.TrimSpace(b.String() + " [" + org + "]")
 }
 
-func NewTransformSettings(args []string, debug bool, executable string) TransformSettings {
+func NewTransformSettings(workingDir string, args []string, debug bool, executable string) TransformSettings {
 	trs := TransformSettings{
 		Enabled:            true,
 		DisclaimerAccepted: false,
@@ -243,7 +243,7 @@ func NewTransformSettings(args []string, debug bool, executable string) Transfor
 					Name:  "transform.local.working-directory",
 					Type:  "string",
 					Popup: false,
-					Text:  "/usr/local/",
+					Text:  workingDir,
 				},
 				{
 					Name:  "transform.local.debug",
@@ -380,10 +380,10 @@ func NewTransform(org, author, prefix, id string, description string, input stri
 	return tr
 }
 
-func GenTransform(org, author, prefix string, outDir string, name string, description string, inputEntity string, executable string, args []string, debug bool) {
+func GenTransform(workingDir, org, author, prefix string, outDir string, name string, description string, inputEntity string, executable string, args []string, debug bool) {
 	var (
 		tr  = NewTransform(org, author, prefix, name, description, inputEntity)
-		trs = NewTransformSettings(args, debug, executable)
+		trs = NewTransformSettings(workingDir, args, debug, executable)
 	)
 
 	// write Transform
