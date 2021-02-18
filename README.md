@@ -1,7 +1,7 @@
 # Maltego
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/dreadl0ck/maltego)](https://goreportcard.com/report/github.com/dreadl0ck/maltego)
-[![License](https://img.shields.io/badge/license-MIT-green)](https://raw.githubusercontent.com/dreadl0ck/maltego/master/docs/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://raw.githubusercontent.com/dreadl0ck/maltego/master/LICENSE)
 [![Go Reference](https://pkg.go.dev/badge/github.com/dreadl0ck/maltego.svg)](https://pkg.go.dev/github.com/dreadl0ck/maltego)
 
 This is a Go package that provides datastructures for interacting with the [Maltego](https://www.maltego.com) graphical link analysis tool.
@@ -22,14 +22,6 @@ Install the library for use in your Go application:
 
     go get github.com/dreadl0ck/maltego
 
-Install the _maltego-gen_ commandline tool:
-
-    go get github.com/dreadl0ck/maltego/cmd/...
-
-## Docker Containers
-
-    docker pull dreadl0ck/trx
-
 ## Usage Examples
 
 Check the examples folder and unit tests!
@@ -44,17 +36,17 @@ Run the unit tests
 
 ```shell
 $ cloc *.go
-13 text files.
-13 unique files.                              
-0 files ignored.
+      14 text files.
+      14 unique files.                              
+       0 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.02 s (855.4 files/s, 163376.8 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.02 s (872.4 files/s, 156290.9 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Go                              13            364            353           1766
+Go                              14            366            355           1787
 -------------------------------------------------------------------------------
-SUM:                            13            364            353           1766
+SUM:                            14            366            355           1787
 -------------------------------------------------------------------------------
 ```
 
