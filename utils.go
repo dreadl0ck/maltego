@@ -26,7 +26,7 @@ import (
 	"time"
 )
 
-var newlineReplacer = strings.NewReplacer("&#xA;", "\n")
+var postEscapeReplacer = strings.NewReplacer("&#xA;", "\n", "&gt;", ">")
 
 type messageType string
 
@@ -54,7 +54,7 @@ func EscapeText(text string) string {
 		fmt.Println(err)
 	}
 
-	return newlineReplacer.Replace(buf.String())
+	return postEscapeReplacer.Replace(buf.String())
 }
 
 // Die will create a new transform with an error message and signal an error and the output to maltego.
