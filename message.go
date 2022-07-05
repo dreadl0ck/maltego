@@ -17,9 +17,10 @@ import "encoding/xml"
 
 // RequestMessage models a request.
 type RequestMessage struct {
-	XMLName  xml.Name `xml:"MaltegoTransformRequestMessage"`
-	Entities Entities `xml:"Entities"`
-	Limits   Limits   `xml:"Limits"`
+	XMLName         xml.Name `xml:"MaltegoTransformRequestMessage"`
+	Entities        Entities `xml:"Entities"`
+	Limits          Limits   `xml:"Limits"`
+	TransformFields Fields   `xml:"TransformFields"`
 }
 
 // Limits structure.
