@@ -1,3 +1,3 @@
-module github.com/dreadl0ck/maltego
+module github.com/winterspite/maltego
 
-go 1.15
+go 1.18
