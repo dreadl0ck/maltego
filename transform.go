@@ -32,7 +32,7 @@ type ResponseMessage struct {
 	UIMessages UIMessages `xml:"UIMessages"`
 }
 
-// ResponseMessage is a container for maltego entities.
+// Entities is a container for maltego entities.
 type Entities struct {
 	Items []*Entity `xml:"Entity"`
 }
